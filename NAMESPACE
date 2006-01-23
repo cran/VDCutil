@@ -1,0 +1,11 @@
+import(R2HTML)
+import(Zelig)
+import(accuracy)
+export(hplot)
+export(VDCgenAnalysis)
+export(zeligListModels,zeligInstalledModels,zeligDescribeModel,zmodel2string,printZeligSchemaInstance)
+export(HTML.summary.MCMCZelig,HTML.summary.zelig,HTML.summary.zelig.strata)
+export(zeligModelDependency,zeligModelDependencies)
+
+S3method(hplot,default)
+S3method(plot,grob) 
