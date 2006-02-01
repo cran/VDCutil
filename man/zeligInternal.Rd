@@ -1,28 +1,24 @@
-\name{zeligDescribeModel}
-\alias{zeligDescribeModel}
-\alias{zmodel2string}
+\name{zeligDescribeModelXML}
+\alias{zeligDescribeModelXML}
 \alias{zeligInstalledModels}
 \alias{zeligListModels}
 \alias{zeligModelDependency}
-\alias{zeligModelDependencies}
+\alias{zeligGetSpecial}
 \title{ Zelig interface functions}
 \description{
 	Zelig interface functions. Used by VDC DSB to  communicate with Zelig.
 }
 \usage{
-	zeligDescribeModel(modelName,force=F,schemaVersion="1.1")
-	zmodel2string(modelDescription) 
+	zeligDescribeModelXML(modelName,force=F,schemaVersion="1.1")
 	zeligInstalledModels(inZeligOnly=T,schemaVersion="1.1")
 	zeligListModels(inZeligOnly=T) 
-	zeligModelDependencies(inZeligOnly=T,schemaVersion="1.1",uninstalledOnly=T, repos=NULL) 
 	zeligModelDependency(modelName,repos) 
+	zeligGetSpecial(modelName)
 }
 
 \arguments{
   \item{modelName}{Name of model as returned by zeligInstalledModels or zeligListModels.}
-  \item{modelDescription}{A model description as returned by zeligDescribeModel}
   \item{inZeligOnly}{Flag, include only models in official Zelig distribution}
-  \item{uninstalledOnly}{Flag, include only uninstalled models}
   \item{repos}{URL of default repository to use}
   \item{schemaVersion}{version of Zelig schema}
   \item{force}{generate a description even if no custom description supplied}
@@ -32,7 +28,9 @@
 Use zeligInstalledModels and zeligListModels to determine what models are available in zelig
 for a particular schema level. Use zmodel2string(zeligDescribeModel()) to generate an XML
 instance describing a model. Use zeligModelDependencies to generate a list of package
-dependencies for models.
+dependencies for models. Use zeligGetSpecial to get the name special function, if any,
+to apply to the outcome variables. All functions return NULL if results are
+not available for that model.
 }
 
 \examples{
@@ -43,7 +41,9 @@ dependencies for models.
 	# show dependency for normal.bayes
 	zeligModelDependency("normal.bayes","http://cran.r-project.org/")
 	# description of logit
-	cat(zmodel2string(zeligDescribeModel("ologit")))
+	cat(zeligDescribeModelXML("ologit"))
+	# special function for factor analysis
+ 	zeligGetSpecial("factor.mix")
 
 \dontshow{
 
@@ -57,7 +57,11 @@ if (zeligModelDependency("poisson.bayes","")[1]!="MCMCpack") {
 	stop("Failed zeligModelDependency self test")
 }
 
-if (grep("explanatory",  zmodel2string(zeligDescribeModel("ologit")))!=1) {
+if (zeligGetSpecial("factor.mix")!="cbind") {
+	stop("Failed zeligGetSpecial self test")
+}
+
+if (grep("explanatory",  zeligDescribeModelXML("ologit"))!=1) {
 	stop("Failed zmodel2string/zeligDescribeModel self test")
 }
 

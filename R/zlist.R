@@ -23,18 +23,7 @@ zeligModelDependencies<-function(inZeligOnly=T,schemaVersion="1.1",uninstalledOn
 		deps=rbind(deps,zd)
 	}   
 	deps=unique(deps)
-}
-
-zeligModelDependency<-function(modelName,repos) {
-        zd= zeligDescribeModel(modelName)
-
-        if (is.null(zd)) { return (NULL) }
-
-	zdpd=zd$model[which(names(zd$model)=="packageDependency")]
-
-	cbind(sapply(zdpd,function(x)x$name),
-		sapply(zdpd,function(x){if (is.null(x$CRAN))
-		{rv<-repos} else{rv<-x$CRAN};rv;}))
+	return(deps)
 }
 
 
@@ -59,7 +48,7 @@ printZeligSchemaInstance<-function(filename=NULL, serverName=NULL,vdcAbsDirPrefi
 		con<-file(filename,"w");
 	}
 	cat(file=con, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zelig xmlns=\"",schemaURL,"\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"",schemaLocation,"\">", sep="");
-	mssg<- sapply(zeligInstalledModels(),function(x){cat(file=con,zmodel2string(zeligDescribeModel(x)),sep="")},simplify=F);
+	mssg<- sapply(zeligInstalledModels(),function(x){cat(file=con,zeligDescribeModelXML(x),sep="")},simplify=F);
 	cat(file=con,"\n</zelig>\n",sep="");
 }
 

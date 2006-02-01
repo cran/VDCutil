@@ -180,15 +180,15 @@ VDCgenAnalysis<-function(
 # and change to correct special
 
 formulaAddSpecial<-function(formula,model) {
-	modelDesc = zeligDescribeModel(model)
-	if ( (!is.null(modelDesc$model$specialFunction))  && 
+	modelSpecial= zeligGetSpecial(model)
+	if ( (!is.null(modelSpecial))  && 
 		length(formula[[2]])>1 &&
 		formula[[2]][[1]]=="list"
 		)  {
-		formula[[2]][[1]]=as.name(modelDesc$model$specialFunction)
-	} else  if ((!is.null(modelDesc$model$specialFunction))  && 
+		formula[[2]][[1]]=as.name(modelSpecial)
+	} else  if ((!is.null(modelSpecial))  && 
 		length(formula[[2]]==1)) {
-		formula[[2]]=call(modelDesc$model$specialFunction,formula[[2]])
+		formula[[2]]=call(modelSpecial,formula[[2]])
 	} 
 	return(formula)
 }

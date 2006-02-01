@@ -16,17 +16,29 @@
 
 # zeligListModels
 # zeligInstalledModels
-# zeligDescribeModel
-# zmodel2string 
+# zeligDescribeModelXML
+# zeligGetSpecial
+# zeligModelDependency
 
 # Please do not remove any of the arguments to these functions, change the default values
-# or change the output format of zeligListModels, zeligInstalledModels, or zmodel2string
-#
-# Changing the output of ZeligDescribeModels is ok, provided that it returns NULL
-# where the model is not described under the requested schema, and provides
-# an output acceptable to zmodel2string
+# or change the output formats
 
+zeligGetSpecial<-function(modelName) {
+	 modelDesc = zeligDescribeModel(modelName)
+	 return(modelDesc$model$specialFunction)
+}
 
+zeligModelDependency<-function(modelName,repos="") {
+        zd= zeligDescribeModel(modelName)
+
+        if (is.null(zd)) { return (NULL) }
+
+        zdpd=zd$model[which(names(zd$model)=="packageDependency")]
+
+        cbind(sapply(zdpd,function(x)x$name),
+                sapply(zdpd,function(x){if (is.null(x$CRAN))
+                {rv<-repos} else{rv<-x$CRAN};rv;}))
+}
 
 zeligListModels<-function(inZeligOnly=T) {
      if (inZeligOnly) {
@@ -40,14 +52,16 @@ zeligListModels<-function(inZeligOnly=T) {
 
 zeligInstalledModels<-function(inZeligOnly=T,schemaVersion="1.1") {
   chkpkgs<-function(name)  {
-       zd=zeligDescribeModel(name,schemaVersion=schmemaVersion)
+       zd=zeligDescribeModelXML(name,schemaVersion=schemaVersion)
        if (is.null(zd)) {
                 return (FALSE)
-                # exclude models that are not documented explicitly
        }
-       zdpd=zd$model[which(names(zd$model)=="packageDependency")]
+       zdpd= zeligModelDependency(name)[,1]
+       if (is.null(zdpd)) {
+		return(TRUE)
+	}
        ow=options(warn=-1)
-       ret = (class(try(sapply(zdpd,function(x)require(x$name,character.only=T)),silent=T))
+       ret = (class(try(sapply(zdpd,function(x)require(x,character.only=T)),silent=T))
 		!="try-error")
 	options(ow)
  	return (ret)
@@ -60,6 +74,17 @@ zeligInstalledModels<-function(inZeligOnly=T,schemaVersion="1.1") {
   models[which(tmpModels)]
 }
 
+zeligDescribeModelXML<-function(modelName,force=F,schemaVersion="1.1") {
+	zd = zeligDescribeModel(modelName,force,schemaVersion);
+	if (is.null(zd)) {
+		return(NULL)
+	} else {
+		return(zmodel2string(zd))
+	}
+}
+
+# the functions below  are not publicly exported, but if you change them
+
 # this describes a model based on the model name
 # it should return an object suitable for zmodel2string if a description
 # exists _in that schema_. If the description does not exists, or is 
@@ -68,6 +93,7 @@ zeligInstalledModels<-function(inZeligOnly=T,schemaVersion="1.1") {
 # zmodel2string()
 # should return an XML document, in the appropriate schema
 # e.g. zmodel2string(zeligDescribeModel("ls"))
+
 
 zeligDescribeModel<-function(modelName,force=F,schemaVersion="1.1") {
     res=try(eval(call(paste("zcheck.",modelName,sep=""))),silent=T)

@@ -38,7 +38,7 @@ hplot(x,y, ... , htmlFile=NULL,  graphfileBase=NULL, bitmapArgs=NULL,htmlArgs=NU
 }
 \author{
 Micah Altman
-\email{thedata-users\@lists.sourceforge.net}
+\email{vdc-dev\@latte.harvard.edu}
 \url{http://thedata.org}
 }
 
