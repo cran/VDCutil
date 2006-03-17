@@ -1,4 +1,4 @@
-VDCcrossTabulation<-function(data=parent.environment(),classificationVars=NULL, freqVars=NULL,
+VDCcrossTabulation<-function(data=parent.env(),classificationVars=NULL, freqVars=NULL,
   wantPercentages=T, wantTotals=T, wantStats=T, wantExtraTables=FALSE,
   HTMLfile="", ...
   ) {
@@ -25,7 +25,7 @@ VDCcrossTabulation<-function(data=parent.environment(),classificationVars=NULL, 
    }
  }
 
-VDCxtabs<-function(formula,data=parent.environment(), ...) {
+VDCxtabs<-function(formula,data=parent.env(), ...) {
     res = list(); res[[1]] = do.call ("xtabs", list(formula=formula, data=data, ... ) )
     attr(res,"ftable")= ft = ftable(res[[1]])
     attr(res,"stats") = summary(res[[1]])

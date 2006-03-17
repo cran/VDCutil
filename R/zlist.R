@@ -33,21 +33,21 @@ zeligModelDependencies<-function(inZeligOnly=T,schemaVersion="1.1",uninstalledOn
 
 printZeligSchemaInstance<-function(filename=NULL, serverName=NULL,vdcAbsDirPrefix=NULL){
 	# open connection 
-	schemaURL<-'http://thedata.org/zelig';
+	schemaURL<-'http://gking.harvard.edu/zelig';
 	if (is.null(serverName)) {
 		serverName<-getHostname()
 	}
 	if (is.null(vdcAbsDirPrefix)){
-		locationURL<-paste('http://', serverName, '/VDC/schema/analysis/ZeligInterfaceDefinition.xsd',sep="");
+		locationURL<-paste('http://', serverName, '/VDC/Schema/analysis/ZeligInterfaceDefinition.xsd',sep="");
 	} else {
-		locationURL<-paste('file://', vdcAbsDirPrefix, '/VDC/schema/analysis/ZeligInterfaceDefinition.xsd',sep="");
+		locationURL<-paste('file://', vdcAbsDirPrefix, '/VDC/Schema/analysis/ZeligInterfaceDefinition.xsd',sep="");
 	}
 	schemaLocation<-paste(schemaURL, ' ', locationURL, sep='');
 	con<-"";
 	if ((!is.null(filename)) && filename !="" ){
 		con<-file(filename,"w");
 	}
-	cat(file=con, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zelig xmlns=\"",schemaURL,"\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"",schemaLocation,"\">", sep="");
+	cat(file=con, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zelig xmlns=\"",schemaURL,"\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"",schemaLocation,"\">\n", sep="");
 	zi = zeligInstalledModelsVDC();
 	zi=setdiff(zi,c("irtkd","normal","normal.bayes"))	
 	CleanzeligDescribeModelXML<-function(model){

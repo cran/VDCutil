@@ -5,7 +5,7 @@
 	This calculate cross tabs with marginals and proportions. 
 }
 \usage{
-VDCcrossTabulation(data=parent.environment(),classificationVars=NULL, freqVars=NULL,
+VDCcrossTabulation(data=parent.env(),classificationVars=NULL, freqVars=NULL,
   wantPercentages=T, wantTotals=T, wantStats=T, wantExtraTables=FALSE,
   HTMLfile="", ...)
 }

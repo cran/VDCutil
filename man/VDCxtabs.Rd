@@ -5,7 +5,7 @@
 	This calculate cross tabs with marginals and proportions. 
 }
 \usage{
-VDCxtabs(formula,data=parent.environment(), ...) 
+VDCxtabs(formula,data=parent.env(), ...) 
 }
 
 \arguments{
