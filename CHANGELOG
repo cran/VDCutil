@@ -5,3 +5,4 @@
 1.08 -- Workarounds for Zelig 2.52,  remove zelig internal code (moved to zelig :-)
 1.09 -- Workarounds for bugs in Zelig 2.53
 1.10 -- typo-correction in printZeligSchemaInstance() in zlist.R
+1.11 -- be more paranoid about plot methods, recodeVDCdf to recode data frames with VDC metadata

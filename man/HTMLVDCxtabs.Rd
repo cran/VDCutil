@@ -6,7 +6,7 @@
 }
 \usage{
 	HTML.VDCxtabs(x,...,
-	 wantPercentages=T, wantTotals=T, wantStats=T)
+	 wantPercentages=T, wantTotals=T, wantStats=T, nameLength=15)
 }
 \arguments{
   \item{x}{ object to converted to HTML}
@@ -14,6 +14,7 @@
   \item{wantPercentages} { include percentages in the output }
   \item{wantTotals} { include marginals in the output }
   \item{wantStats} { include chi-squared statistics in the output }
+  \item{nameLength} { maximum length of variable labels}
 
 }
 

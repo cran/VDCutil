@@ -48,6 +48,9 @@ VDCgenAnalysis<-function(
          data<-na.exclude(data);
       }
 
+      # add vdc values labels and MV, recode to factors
+      data<-recodeVDCdf(data)
+
       # add special to formula if necessary 
       formula = formulaAddSpecial(formula,model)
       
@@ -133,26 +136,33 @@ VDCgenAnalysis<-function(
 
       if(wantSummary && wantSensitivity) {
           HTML.title("Sensitivity Analysis")
-          HTML(zel.rob.out, file=htmlFilePath);
+          HTML(summary(zel.rob.out), file=htmlFilePath);
           if (wantPlots) {
-             hplot(zel.rob.out)
+             try(hplot(zel.rob.out),silent=T)
           }
       }
       
       if(wantSim) {
           HTML.title("Simulation  Results")
-          HTML(summary(sim.out), file=htmlFilePath);
+	  tmpsum = try(summary(sim.out),silent=TRUE);
+          if (!inherits(tmpsum,"try-error")) {
+          	HTML(summary(tmpsum), file=htmlFilePath);
+	  }
 
           if (wantPlots) {
-             hplot(sim.out)
+             try(hplot(sim.out),silent=T)
           }
       }
       
       if(wantSim && wantSensitivity) {
           HTML.title("Simulation Sensitivity Analysis")
-          HTML(summary(sim.rob.out), file=htmlFilePath);
+	  tmpsum = try(summary(sim.rob.out),silent=TRUE);
+          if (!inherits(tmpsum,"try-error")) {
+          	HTML(summary(tmpsum), file=htmlFilePath);
+	  }
+
           if (wantPlots) {
-             hplot(sim.rob.out)
+             try(hplot(sim.rob.out),silent=T)
           }
       }
 

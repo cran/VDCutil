@@ -9,6 +9,7 @@ export(zeligModelDependencies)
 #export(zeligListModels,zeligInstalledModels,zeligDescribeModelXML,zeligGetSpecial)
 export(VDCcrossTabulation,VDCxtabs,HTML.VDCxtabs)
 export(VDCWebSearch)
+export(recodeVDCdf)
 
 S3method(hplot,default)
 S3method(plot,grob) 

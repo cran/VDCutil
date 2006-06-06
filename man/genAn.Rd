@@ -49,6 +49,9 @@ VDCgenAnalysis(
 	Only formula, model and data are required. Everything else can be defaulted.
 	And in the formula if you use \code{list()} to enclose multiple outcome variables
 	the appropriate zelig special will automatically be supplied.
+
+        VDCxtabs will call \code{recodeVDCdf} to apply VDC metadata attributes for labels, and missing v
+alues.
 }
 
 \value{

@@ -3,6 +3,7 @@ VDCcrossTabulation<-function(data=parent.env(),classificationVars=NULL, freqVars
   HTMLfile="", ...
   ) {
   
+
    if (length(classificationVars)<2) {
       warning("VDCcrosstab at least two classifaction variables")
       return(NULL)
@@ -25,24 +26,46 @@ VDCcrossTabulation<-function(data=parent.env(),classificationVars=NULL, freqVars
    }
  }
 
-VDCxtabs<-function(formula,data=parent.env(), ...) {
-    res = list(); res[[1]] = do.call ("xtabs", list(formula=formula, data=data, ... ) )
-    attr(res,"ftable")= ft = ftable(res[[1]])
-    attr(res,"stats") = summary(res[[1]])
-    attr(res,"rowTotals") = apply(ft,1,sum)
-    attr(res,"colTotals") = apply(ft,2,sum)
-    attr(res,"total") = sum(attr(res,"colTotals"))
-    attr(res,"rowPercent")= prop.table(ft,1)
-    attr(res,"colPercent")= prop.table(ft,2)
-    class(res)="VDCxtabs"
+
+VDCxtabs<-function (formula, data = parent.env(), ...) 
+{
+    res = list()
+    data=recodeVDCdf(data)
+    res[[1]] = do.call("xtabs", list(formula = formula, data = as.name("data"), 
+        ...))
+    # apply VDC variable labels
+    var.labels=attr(data,"var.labels")
+    if (!is.null(var.labels)) {
+	tmpdim=attr(res[[1]],"dimnames")
+	names(tmpdim)=paste(names(tmpdim),
+		var.labels[match(names(attr(res[[1]],"dimnames")),names(data))]
+		,sep=": ")
+	attr(res[[1]],"dimnames")=tmpdim
+    }
+    attr(res, "ftable") = ft = ftable(res[[1]])
+    attr(res, "stats") = summary(res[[1]])
+    attr(res, "rowTotals") = apply(ft, 1, sum)
+    attr(res, "colTotals") = apply(ft, 2, sum)
+    attr(res, "total") = sum(attr(res, "colTotals"))
+    attr(res, "rowPercent") = prop.table(ft, 1)
+    attr(res, "colPercent") = prop.table(ft, 2)
+    class(res) = "VDCxtabs"
     return(res)
- }
+}
   
 print.VDCxtabs<-function(x,...,
-    wantPercentages=T, wantTotals=T, wantStats=T) {
+    wantPercentages=T, wantTotals=T, wantStats=T,nameLength=15) {
       ft = attr(x,"ftable")
 
       tmpat = attributes(ft)
+
+      # handle long labels
+      longnames=which(nchar(names(tmpat$col.vars))>nameLength)
+      names(tmpat$col.vars)[longnames]=
+        paste(substr(names(tmpat$col.vars)[longnames],1,10),"",sep="...")
+      longnames=which(nchar(names(tmpat$row.vars))>nameLength)
+      names(tmpat$row.vars)[longnames]=
+        paste(substr(names(tmpat$row.vars)[longnames],1,10),"",sep="...")
       if (wantPercentages) {
          fmtrow = paste("(",round(attr(x,"rowPercent")*100,digits=1),"%)",sep="")
          fmtcol = paste("(",round(attr(x,"colPercent")*100,digits=1),"%)",sep="")
@@ -80,10 +103,19 @@ print.VDCxtabs<-function(x,...,
   }
   
   HTML.VDCxtabs<-function(x,...,
-    wantPercentages=T, wantTotals=T, wantStats=T) {
+    wantPercentages=T, wantTotals=T, wantStats=T, nameLength=15) {
       ft = attr(x,"ftable")
 
       tmpat = attributes(ft)
+
+      # handle long labels
+      longnames=which(nchar(names(tmpat$col.vars))>nameLength)
+      names(tmpat$col.vars)[longnames]=
+        paste(substr(names(tmpat$col.vars)[longnames],1,10),"",sep="...")
+      longnames=which(nchar(names(tmpat$row.vars))>nameLength)
+      names(tmpat$row.vars)[longnames]=
+        paste(substr(names(tmpat$row.vars)[longnames],1,10),"",sep="...")
+
       if (wantPercentages) {
          fmtrow = paste("<span class='VDCrowper'>(",round(attr(x,"rowPercent")*100,digits=1),
             "%)</span>",sep="")
