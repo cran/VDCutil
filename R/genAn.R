@@ -124,9 +124,9 @@ VDCgenAnalysis<-function(
           HTML.title("Summary Results")
 	  tmpsum = try(summary(zel.out),silent=TRUE);
           if (!inherits(tmpsum,"try-error")) {
-		# HTML would warn about deprecated format.char here
+		# R2HTML bug workaround in 1.57
 		ow=options(warn=-1)
-		HTML(tmpsum, file=htmlFilePath);
+		try(HTML(tmpsum, file=htmlFilePath),silent=TRUE);
 		options(ow)
 	  }
           if (wantPlots) {

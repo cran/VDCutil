@@ -71,7 +71,7 @@ zeligInstalledModelsVDC<-function (inZeligOnly = T, schemaVersion = "1.1")
             return(TRUE)
         }
         ow = options(warn = -1)
-        ret = sapply(zdpd, function(x) require(x, character.only = T) ==T)
+        ret = sapply(zdpd, function(x) require(x, character.only = TRUE) == TRUE)
         options(ow)
         return(ret)
     }
