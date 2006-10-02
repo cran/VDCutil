@@ -56,12 +56,14 @@ VDCgenAnalysis(
 }
 \examples{
 # using required fields and defaults, output will be summary html
-VDCgenAnalysis(Employed~.,"ls",longley)
+VDCgenAnalysis(Employed~Year,"ls",longley)
 
 # shows additional output options, passing arguments to sim() 
 # and through zeligArgs to lm()
 
-VDCgenAnalysis(Employed~.,"ls",longley,   
+
+# should be Employed~. but Zelig 2.52 currently has a bug in setx wrt to dots
+VDCgenAnalysis(Employed~GNP.deflator+GNP+Unemployed+Armed.Forces+Population+Year,"ls",longley,   
         wantPlots=TRUE,  wantSim=TRUE, wantBinOutput=TRUE, wantSensitivity=TRUE,
         naMethod="omit",
         sensitivityQ=0.95,

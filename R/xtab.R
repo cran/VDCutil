@@ -42,9 +42,8 @@ print.VDCxtabs<-function(x,...,
     wantPercentages=T, wantTotals=T, wantStats=T) {
       ft = attr(x,"ftable")
 
+      tmpat = attributes(ft)
       if (wantPercentages) {
-         tmpat = attributes(ft)
-         tmpat$col.vars[[1]]=c(tmpat$col.vars[[1]],"Row Totals")
          fmtrow = paste("(",round(attr(x,"rowPercent")*100,digits=1),"%)",sep="")
          fmtcol = paste("(",round(attr(x,"colPercent")*100,digits=1),"%)",sep="")
          ftfmt = paste(ft,fmtrow,fmtcol)
@@ -55,6 +54,7 @@ print.VDCxtabs<-function(x,...,
 
       if (wantTotals) {
          tmpat$dim[2]=tmpat$dim[2]+1
+         tmpat$col.vars[[1]]=c(tmpat$col.vars[[1]],"Row Totals")
          ftfmt = cbind(ftfmt,attr(x,"rowTotals"))
       }
 
@@ -83,9 +83,8 @@ print.VDCxtabs<-function(x,...,
     wantPercentages=T, wantTotals=T, wantStats=T) {
       ft = attr(x,"ftable")
 
+      tmpat = attributes(ft)
       if (wantPercentages) {
-         tmpat = attributes(ft)
-         tmpat$col.vars[[1]]=c(tmpat$col.vars[[1]],"Row Totals")
          fmtrow = paste("<span class='VDCrowper'>(",round(attr(x,"rowPercent")*100,digits=1),
             "%)</span>",sep="")
          fmtcol = paste("<br/><span class='VDCrowper'>(",round(attr(x,"colPercent")*100,digits=1),
@@ -98,6 +97,7 @@ print.VDCxtabs<-function(x,...,
 
       if (wantTotals) {
          tmpat$dim[2]=tmpat$dim[2]+1
+         tmpat$col.vars[[1]]=c(tmpat$col.vars[[1]],"Row Totals")
          ftfmt = cbind(ftfmt,paste("<span class='VDCtotal'>",
             attr(x,"rowTotals"),"</span>"))
       }

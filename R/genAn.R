@@ -33,6 +33,9 @@ VDCgenAnalysis<-function(
       wantBinOutput=F, 	
       debug=F) {
       
+
+      # workaround Zelig 2.5.2 bug
+	attr(formula,".Environment")=environment()
       # list of objects to save
 
       savelist=character(0)
@@ -181,6 +184,9 @@ VDCgenAnalysis<-function(
 
 formulaAddSpecial<-function(formula,model) {
 	modelSpecial= zeligGetSpecial(model)
+	if (!is.null(modelSpecial) && is.na(modelSpecial)) {
+		modelSpecial = NULL;
+	}
 	if ( (!is.null(modelSpecial))  && 
 		length(formula[[2]])>1 &&
 		formula[[2]][[1]]=="list"

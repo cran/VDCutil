@@ -23,7 +23,8 @@
 	None
 }
 \examples{
-	z.out = zelig(Employed~.,"ls",longley)
+	# should be Employed~. , but bug in Zelig 2.52 
+	z.out = zelig(Employed~Year,"ls",longley)
 	sim.out =sim(z.out, setx(z.out))
 	summary(sim.out)
 	# HTML methods called implicitly

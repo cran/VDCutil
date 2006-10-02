@@ -15,7 +15,7 @@ hplot.default<-  function(x,y, ... , htmlFile=NULL,  graphfileBase=NULL, bitmapA
     	as.integer(runif(1,min=0,max=.Machine$integer.max)), sep="A" )
 
   bitmapArgs$file=file.path(graphDir,paste(graphfileBase, "_%03d" ,".",ext, sep=""))
-  if (class(try(do.call( "bitmap", bitmapArgs )))=="try-error") { 
+  if (class(try(do.call( "bitmap", bitmapArgs ),silent=T))=="try-error") { 
 	# bitmap failed, probably missing ghostscript
 	pngArgs=list()
 	pngArgs$filename=bitmapArgs$file # note different syntax :-(
