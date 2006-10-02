@@ -1,6 +1,6 @@
 Package: VDCutil
 Title:   utilities supporting the VDC system
-Version: 1.08
+Version: 1.09
 Author: Micah Altman, Akio Sone
 Date: 02-10-06
 Description: The VDC system is an open source digital library system for 
@@ -11,4 +11,4 @@ Depends: R (>= 1.9.0), Zelig, R2HTML, accuracy , utils
 Recommends: UNF
 License: GPL 2.0
 URL:  http://thedata.org/
-Packaged: Fri Feb 10 15:01:25 2006; maltman
+Packaged: Tue Feb 14 17:05:18 2006; maltman

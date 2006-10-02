@@ -48,8 +48,36 @@ printZeligSchemaInstance<-function(filename=NULL, serverName=NULL,vdcAbsDirPrefi
 		con<-file(filename,"w");
 	}
 	cat(file=con, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<zelig xmlns=\"",schemaURL,"\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"",schemaLocation,"\">", sep="");
-	mssg<- sapply(zeligInstalledModels(),function(x){cat(file=con,zeligDescribeModelXML(x),sep="")},simplify=F);
+	zi = zeligInstalledModelsVDC();
+	zi=setdiff(zi,c("irtkd","normal","normal.bayes"))	
+	CleanzeligDescribeModelXML<-function(model){
+		ret= sub("formula(.*)\/>","formula\\1>",perl=T,zeligDescribeModelXML(model))
+		ret=  sub("equation(.*)\/>","equation\\1>",perl=T,ret)
+		ret	
+	}
+	mssg<- sapply(zi,function(x){cat(file=con,CleanzeligDescribeModelXML(x),sep="")},simplify=F);
 	cat(file=con,"\n</zelig>\n",sep="");
+}
+
+zeligInstalledModelsVDC<-function (inZeligOnly = T, schemaVersion = "1.1") 
+{
+    chkpkgs <- function(name) {
+        zd = zeligDescribeModelXML(name, schemaVersion = schemaVersion)
+        if (is.null(zd)) {
+            return(FALSE)
+        }
+        zdpd = zeligModelDependency(name)[, 1]
+        if (is.null(zdpd)) {
+            return(TRUE)
+        }
+        ow = options(warn = -1)
+        ret = sapply(zdpd, function(x) require(x, character.only = T) ==T)
+        options(ow)
+        return(ret)
+    }
+    models <- zeligListModels(inZeligOnly = inZeligOnly)
+    tmpModels <- sapply(models, chkpkgs)
+    models[which(tmpModels)]
 }
 
 # taken from R.utils 
