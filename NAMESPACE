@@ -1,3 +1,6 @@
+import(R2HTML)
+import(Zelig)
+import(accuracy)
 export(hplot)
 export(VDCgenAnalysis)
 export(printZeligSchemaInstance)
