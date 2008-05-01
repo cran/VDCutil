@@ -5,7 +5,7 @@
 	This is used to pretty-print VDCxtabs
 }
 \usage{
-	print.VDCxtabs(x,...,
+	\method{print}{VDCxtabs}(x, \dots,
 	 wantPercentages=T, wantTotals=T, wantStats=T, nameLength=15 )
 }
 \arguments{
